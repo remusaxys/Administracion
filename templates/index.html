@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>AXYSTRY - Sistema de Gastos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <header class="topbar">
+        <div class="topbar-brand">
+            <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo AXYSTRY" class="topbar-logo">
+            <div>
+                <h1>AXYSTRY</h1>
+                <p>Registro, metricas y exportacion a Excel</p>
+            </div>
+        </div>
+        <div class="topbar-actions">
+            <a class="btn secondary" href="{{ url_for('exportar_excel') }}">Exportar Excel</a>
+            <a class="btn danger" href="{{ url_for('logout') }}">Salir</a>
+        </div>
+    </header>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <section class="grid">
+            <div class="card">
+                <h2>Cargar gasto</h2>
+                <form method="POST" class="form">
+                    <div class="form-row">
+                        <div>
+                            <label>Responsable</label>
+                            <input type="text" name="responsable" placeholder="Ej: Fernando" required>
+                        </div>
+                        <div>
+                            <label>Fecha</label>
+                            <input type="date" name="fecha" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div>
+                            <label>Monto</label>
+                            <input type="number" name="monto" step="0.01" min="0" placeholder="Ej: 15990" required>
+                        </div>
+                        <div>
+                            <label>Moneda</label>
+                            <select name="moneda" required>
+                                {% for moneda in monedas %}
+                                    <option value="{{ moneda }}">{{ moneda }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Categoria</label>
+                        <select name="categoria" required>
+                            {% for categoria in categorias %}
+                                <option value="{{ categoria }}">{{ categoria }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <label>Descripcion</label>
+                    <textarea name="descripcion" rows="3" placeholder="Describe brevemente el gasto" required></textarea>
+
+                    <button type="submit">Guardar gasto</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <div class="card-header">
+                    <div>
+                        <h2>Distribucion por categoria</h2>
+                        <p>Total activo registrado: <strong>{{ "%.2f"|format(total_general) }}</strong></p>
+                    </div>
+                </div>
+
+                {% if values %}
+                    <div class="chart-box">
+                        <canvas id="gastosChart"></canvas>
+                    </div>
+                {% else %}
+                    <div class="empty">
+                        Todavia no hay gastos activos cargados.
+                    </div>
+                {% endif %}
+            </div>
+        </section>
+
+        <section class="card chart-card">
+            <div class="card-header">
+                <div>
+                    <h2>Gastos por responsable</h2>
+                    <p>Comparativo total activo registrado por persona</p>
+                </div>
+            </div>
+
+            {% if values_responsable %}
+                <div class="chart-box bar-chart-box">
+                    <canvas id="responsableChart"></canvas>
+                </div>
+            {% else %}
+                <div class="empty">
+                    Todavia no hay gastos activos por responsable para mostrar.
+                </div>
+            {% endif %}
+        </section>
+
+        <section class="card table-card">
+            <div class="card-header">
+                <div>
+                    <h2>Gastos cargados</h2>
+                    <p>{{ gastos|length }} registro(s), incluyendo anulados</p>
+                </div>
+            </div>
+
+            {% if gastos %}
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Responsable</th>
+                                <th>Fecha</th>
+                                <th>Categoria</th>
+                                <th>Descripcion</th>
+                                <th>Moneda</th>
+                                <th>Monto</th>
+                                <th>Estado</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for gasto in gastos %}
+                                <tr class="{% if gasto.estado == 'Anulado' %}row-anulado{% endif %}">
+                                    <td>{{ gasto.responsable or "Sin responsable" }}</td>
+                                    <td>{{ gasto.fecha }}</td>
+                                    <td><span class="badge">{{ gasto.categoria }}</span></td>
+                                    <td>{{ gasto.descripcion }}</td>
+                                    <td>{{ gasto.moneda }}</td>
+                                    <td class="amount">{{ "%.2f"|format(gasto.monto) }}</td>
+                                    <td>
+                                        {% if gasto.estado == 'Anulado' %}
+                                            <span class="status-badge status-anulado">Anulado</span>
+                                        {% else %}
+                                            <span class="status-badge status-activo">Activo</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>
+                                        {% if gasto.estado == 'Anulado' %}
+                                            <span class="muted-action">Sin acciones</span>
+                                        {% else %}
+                                            <div class="action-group">
+                                                <a class="action-link edit" href="{{ url_for('editar_gasto', gasto_id=gasto.id) }}">Editar</a>
+                                                <form method="POST" action="{{ url_for('anular_gasto', gasto_id=gasto.id) }}" onsubmit="return confirm('Seguro que deseas anular este gasto? No se borrara de la base, pero dejara de contar en reportes y exportacion.');">
+                                                    <button class="action-link cancel" type="submit">Anular</button>
+                                                </form>
+                                            </div>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            {% else %}
+                <div class="empty">
+                    No hay gastos para mostrar.
+                </div>
+            {% endif %}
+        </section>
+    </main>
+
+    <script>
+        const labels = {{ labels|tojson }};
+        const values = {{ values|tojson }};
+        const labelsResponsable = {{ labels_responsable|tojson }};
+        const valuesResponsable = {{ values_responsable|tojson }};
+        const chartColors = ['#102a63', '#16b8d9', '#f59e0b', '#0f766e', '#64748b', '#8b5cf6', '#ef4444', '#22c55e'];
+
+        Chart.defaults.font.family = 'Arial, Helvetica, sans-serif';
+        Chart.defaults.color = '#667085';
+
+        if (values.length > 0) {
+            const ctx = document.getElementById('gastosChart');
+
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: values,
+                        backgroundColor: chartColors,
+                        borderColor: '#ffffff',
+                        borderWidth: 3,
+                        hoverOffset: 8,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                boxWidth: 12,
+                                padding: 14
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const total = values.reduce((a, b) => a + b, 0);
+                                    const value = context.raw;
+                                    const percentage = total ? ((value / total) * 100).toFixed(1) : 0;
+                                    return `${context.label}: ${value.toFixed(2)} (${percentage}%)`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        if (valuesResponsable.length > 0) {
+            const responsableCtx = document.getElementById('responsableChart');
+
+            new Chart(responsableCtx, {
+                type: 'bar',
+                data: {
+                    labels: labelsResponsable,
+                    datasets: [{
+                        label: 'Total gastos activos',
+                        data: valuesResponsable,
+                        backgroundColor: '#16b8d9',
+                        borderColor: '#0f766e',
+                        borderWidth: 1,
+                        borderRadius: 8,
+                        maxBarThickness: 46,
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: '#e7edf5'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return `Total: ${Number(context.raw).toFixed(2)}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>

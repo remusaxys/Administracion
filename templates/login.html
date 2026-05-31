@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ingreso - AXYSTRY Gastos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body class="login-body">
+    <div class="login-card">
+        <div class="brand">
+            <div class="brand-icon">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo AXYSTRY" class="brand-logo">
+            </div>
+            <div>
+                <h1>AXYSTRY</h1>
+                <p>Control de gastos corporativos</p>
+            </div>
+        </div>
+
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="messages">
+                    {% for category, message in messages %}
+                        <div class="message {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <form method="POST" class="form">
+            <label>Usuario</label>
+            <input type="text" name="usuario" placeholder="admin" autocomplete="username" required>
+
+            <label>Contrase&ntilde;a</label>
+            <input type="password" name="password" placeholder="Contrase&ntilde;a" autocomplete="current-password" required>
+
+            <button type="submit">Ingresar</button>
+        </form>
+
+        <div class="hint">
+            Usuario inicial: <strong>admin</strong><br>
+            Contrase&ntilde;a inicial: <strong>12345</strong>
+        </div>
+    </div>
+</body>
+</html>
