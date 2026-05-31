@@ -9,9 +9,12 @@
 <body>
     <header class="topbar">
         <div class="topbar-brand">
-            <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo AXYSTRY" class="topbar-logo">
-            <div>
-                <h1>Editar gasto</h1>
+            <img src="{{ url_for('static', filename='axystry_logo_figura_sin_texto.svg') }}" alt="Logo AxysTry" class="topbar-logo">
+            <div class="wordmark wordmark-top">
+                <h1>Axys<span>Try</span></h1>
+                <div class="wordmark-line">
+                    <i></i><strong>Solutions</strong><i></i>
+                </div>
                 <p>Actualiza los datos del registro seleccionado</p>
             </div>
         </div>
@@ -33,6 +36,7 @@
         {% endwith %}
 
         <section class="card edit-card">
+            <p class="eyebrow">Modulo administracion</p>
             <h2>Datos del gasto</h2>
 
             <form method="POST" class="form">

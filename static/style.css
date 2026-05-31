@@ -1,17 +1,21 @@
 :root {
-    --ink: #101828;
-    --navy: #102a63;
-    --navy-2: #071a3d;
-    --cyan: #16b8d9;
-    --teal: #0f766e;
-    --red: #dc2626;
-    --green: #16a34a;
-    --bg: #f4f7fb;
-    --panel: #ffffff;
-    --panel-soft: #f8fafc;
-    --line: #d9e2ef;
-    --muted: #667085;
-    --shadow: 0 16px 38px rgba(16, 24, 40, 0.12);
+    --brand-navy: #0b1f5b;
+    --deep-navy: #061a31;
+    --ink: #1b2559;
+    --slate: #5e6b98;
+    --cyan: #29d3f2;
+    --cyan-strong: #18afc2;
+    --cyan-soft: #b7f1ff;
+    --sky: #8fc9e1;
+    --line: #d7e8f1;
+    --line-strong: rgba(143, 201, 225, 0.45);
+    --panel: rgba(255, 255, 255, 0.86);
+    --panel-solid: #ffffff;
+    --panel-soft: #f8fdff;
+    --success: #16a34a;
+    --danger: #ef4444;
+    --shadow-soft: 0 18px 45px rgba(17, 91, 200, 0.10);
+    --shadow-glow: 0 12px 28px rgba(34, 200, 231, 0.35);
 }
 
 * {
@@ -24,15 +28,27 @@ html {
 }
 
 body {
+    position: relative;
     margin: 0;
     width: 100%;
     min-height: 100vh;
-    font-family: Arial, Helvetica, sans-serif;
+    font-family: "Plus Jakarta Sans", Inter, Arial, Helvetica, sans-serif;
     color: var(--ink);
     background:
-        linear-gradient(180deg, rgba(16, 42, 99, 0.06) 0%, rgba(244, 247, 251, 0) 280px),
-        var(--bg);
+        radial-gradient(circle at 18% 20%, var(--cyan-soft) 0%, transparent 40%),
+        radial-gradient(circle at 82% 68%, #c8e7ff 0%, transparent 42%),
+        linear-gradient(180deg, #f7fcff 0%, #e8f4ff 42%, #f1f8fc 68%, #ffffff 100%);
     overflow-x: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    opacity: 0.35;
+    background-image: radial-gradient(#7acde6 1px, transparent 1px);
+    background-size: 36px 36px;
 }
 
 img {
@@ -57,19 +73,17 @@ textarea {
     min-height: 100vh;
     place-items: center;
     padding: 22px;
-    background:
-        linear-gradient(135deg, rgba(7, 26, 61, 0.96), rgba(16, 42, 99, 0.94)),
-        #071a3d;
 }
 
 .login-card {
     width: 100%;
-    max-width: 430px;
-    padding: 30px;
-    border: 1px solid rgba(255, 255, 255, 0.18);
-    border-radius: 8px;
-    background: var(--panel);
-    box-shadow: var(--shadow);
+    max-width: 450px;
+    padding: 28px;
+    border: 1px solid var(--line-strong);
+    border-radius: 24px;
+    background: rgba(255, 255, 255, 0.9);
+    box-shadow: 0 20px 60px rgba(17, 91, 200, 0.12);
+    backdrop-filter: blur(18px);
 }
 
 .brand {
@@ -81,73 +95,102 @@ textarea {
 
 .brand-icon {
     display: grid;
-    width: 58px;
-    min-width: 58px;
-    height: 58px;
+    width: 70px;
+    min-width: 70px;
+    height: 70px;
     place-items: center;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    background: #ffffff;
+    border: 1px solid #b8dff1;
+    border-radius: 20px;
+    background: linear-gradient(180deg, #ffffff, #eef8ff);
+    box-shadow: inset 0 0 0 1px rgba(129, 226, 255, 0.2), 0 10px 30px rgba(10, 53, 90, 0.08);
 }
 
 .brand-logo {
-    width: 46px;
-    height: 46px;
+    width: 52px;
+    height: 52px;
     object-fit: contain;
 }
 
-.brand h1,
-.topbar h1 {
+.wordmark h1 {
     margin: 0;
-    letter-spacing: 0;
+    color: var(--brand-navy);
+    font-size: 40px;
+    font-weight: 900;
+    line-height: 0.98;
 }
 
-.brand h1 {
-    color: var(--navy);
-    font-size: 28px;
+.wordmark h1 span {
+    color: var(--cyan);
 }
 
-.brand p,
-.topbar p,
-.card-header p {
-    margin: 4px 0 0;
-    color: var(--muted);
+.wordmark-line {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 8px;
+}
+
+.wordmark-line i {
+    display: block;
+    width: 28px;
+    height: 2px;
+    border-radius: 999px;
+    background: rgba(41, 211, 242, 0.85);
+}
+
+.wordmark-line strong {
+    color: var(--cyan-strong);
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.34em;
+    text-transform: uppercase;
+}
+
+.wordmark p {
+    margin: 6px 0 0;
+    color: rgba(11, 31, 91, 0.92);
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.wordmark-top h1 {
+    font-size: 38px;
+}
+
+.wordmark-top p {
+    color: #365774;
 }
 
 .topbar {
+    position: sticky;
+    top: 0;
+    z-index: 40;
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 20px;
     width: 100%;
-    padding: 18px 28px;
-    color: #ffffff;
-    background: var(--navy-2);
-    border-bottom: 4px solid var(--cyan);
+    padding: 14px 28px;
+    border-bottom: 1px solid var(--line);
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(12px);
 }
 
 .topbar-brand {
     display: flex;
     align-items: center;
     min-width: 0;
-    gap: 14px;
+    gap: 12px;
 }
 
 .topbar-logo {
-    width: 48px;
-    min-width: 48px;
-    height: 48px;
+    width: 50px;
+    min-width: 50px;
+    height: 50px;
     padding: 6px;
-    border-radius: 8px;
+    border: 1px solid #b8dff1;
+    border-radius: 16px;
     background: #ffffff;
-}
-
-.topbar h1 {
-    font-size: 25px;
-}
-
-.topbar p {
-    color: rgba(255, 255, 255, 0.78);
 }
 
 .topbar-actions {
@@ -175,16 +218,28 @@ textarea {
     width: 100%;
     min-width: 0;
     padding: 22px;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 24px;
     background: var(--panel);
-    box-shadow: 0 10px 26px rgba(16, 24, 40, 0.06);
+    box-shadow: var(--shadow-soft);
+    backdrop-filter: blur(18px);
 }
 
 .card h2 {
     margin: 0 0 16px;
-    color: var(--navy-2);
-    font-size: 20px;
+    color: var(--deep-navy);
+    font-size: 22px;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.eyebrow {
+    margin: 0 0 8px;
+    color: #0e3a5d;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
 }
 
 .card-header {
@@ -197,6 +252,11 @@ textarea {
 
 .card-header h2 {
     margin-bottom: 4px;
+}
+
+.card-header p:not(.eyebrow) {
+    margin: 0;
+    color: var(--slate);
 }
 
 .form {
@@ -213,9 +273,9 @@ textarea {
 label {
     display: block;
     margin-bottom: 7px;
-    color: #344054;
+    color: #1d3553;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 input,
@@ -224,12 +284,13 @@ textarea {
     width: 100%;
     min-height: 44px;
     padding: 11px 12px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
+    border: 1px solid var(--line-strong);
+    border-radius: 12px;
     outline: none;
     background: #ffffff;
-    color: var(--ink);
+    color: #0f355f;
     font-size: 15px;
+    line-height: 1.45;
 }
 
 textarea {
@@ -237,11 +298,16 @@ textarea {
     resize: vertical;
 }
 
+input::placeholder,
+textarea::placeholder {
+    color: #96a3b8;
+}
+
 input:focus,
 select:focus,
 textarea:focus {
     border-color: var(--cyan);
-    box-shadow: 0 0 0 3px rgba(22, 184, 217, 0.16);
+    box-shadow: 0 0 0 3px rgba(122, 205, 230, 0.35);
 }
 
 button,
@@ -250,43 +316,43 @@ button,
     align-items: center;
     justify-content: center;
     min-height: 42px;
-    padding: 10px 15px;
+    padding: 10px 16px;
     border: 0;
-    border-radius: 6px;
-    background: var(--navy);
+    border-radius: 12px;
+    background: linear-gradient(90deg, #0f4cc9, #22c8e7);
     color: #ffffff;
+    box-shadow: var(--shadow-glow);
     cursor: pointer;
     font-size: 14px;
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1;
     text-decoration: none;
-    transition: background 0.18s ease, transform 0.18s ease, box-shadow 0.18s ease;
+    transition: transform 0.18s ease, filter 0.18s ease, box-shadow 0.18s ease;
 }
 
 button:hover,
 .btn:hover {
-    background: #0b214f;
-    box-shadow: 0 8px 18px rgba(16, 42, 99, 0.18);
-    transform: translateY(-1px);
+    filter: brightness(1.05);
+    transform: scale(1.02);
 }
 
 .btn.secondary {
-    background: var(--cyan);
-    color: #05223a;
-}
-
-.btn.secondary:hover {
-    background: #10a8c6;
+    background: linear-gradient(90deg, #18afc2, #66ecff);
+    color: #0d3558;
 }
 
 .btn.danger {
-    background: var(--red);
+    background: #ffffff;
+    color: #b42318;
+    border: 1px solid #fecaca;
+    box-shadow: 0 10px 22px rgba(7, 26, 77, 0.04);
 }
 
 .btn.light {
-    border: 1px solid var(--line);
+    border: 1px solid var(--line-strong);
     background: #ffffff;
-    color: var(--ink);
+    color: #0d3558;
+    box-shadow: 0 10px 22px rgba(7, 26, 77, 0.04);
 }
 
 button[type="submit"] {
@@ -301,8 +367,8 @@ button[type="submit"] {
 
 .message {
     padding: 12px 14px;
-    border-radius: 6px;
-    font-weight: 700;
+    border-radius: 12px;
+    font-weight: 800;
 }
 
 .message.error {
@@ -320,10 +386,10 @@ button[type="submit"] {
 .hint {
     margin-top: 20px;
     padding: 13px;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    background: var(--panel-soft);
-    color: var(--muted);
+    border: 1px solid var(--line-strong);
+    border-radius: 14px;
+    background: rgba(248, 253, 255, 0.9);
+    color: var(--slate);
     font-size: 14px;
 }
 
@@ -350,8 +416,9 @@ button[type="submit"] {
 .table-wrap {
     width: 100%;
     overflow-x: auto;
-    border: 1px solid var(--line);
-    border-radius: 8px;
+    border: 1px solid var(--line-strong);
+    border-radius: 18px;
+    background: rgba(255, 255, 255, 0.72);
     -webkit-overflow-scrolling: touch;
 }
 
@@ -370,19 +437,19 @@ td {
 }
 
 th {
-    background: #eef4fb;
-    color: #344054;
+    background: linear-gradient(180deg, #f8fdff, #eef8ff);
+    color: #2f6b8b;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 900;
     text-transform: uppercase;
 }
 
 tbody tr:nth-child(even) td {
-    background: #fbfdff;
+    background: rgba(248, 253, 255, 0.72);
 }
 
 tbody tr:hover td {
-    background: #f5fbff;
+    background: #f2fcff;
 }
 
 tbody tr:last-child td {
@@ -396,14 +463,15 @@ tbody tr:last-child td {
     justify-content: center;
     border-radius: 999px;
     font-size: 12px;
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1;
 }
 
 .badge {
     padding: 6px 9px;
-    background: #e6f7fb;
-    color: #075985;
+    border: 1px solid #b8dff1;
+    background: linear-gradient(180deg, #f8fdff, #e4f4ff);
+    color: #2f6b8b;
 }
 
 .status-badge {
@@ -433,8 +501,8 @@ tbody tr:last-child td {
 }
 
 .amount {
-    color: var(--navy);
-    font-weight: 800;
+    color: var(--brand-navy);
+    font-weight: 900;
     white-space: nowrap;
 }
 
@@ -443,10 +511,10 @@ tbody tr:last-child td {
     min-height: 150px;
     place-items: center;
     padding: 24px;
-    border: 1px dashed var(--line);
-    border-radius: 8px;
-    background: var(--panel-soft);
-    color: var(--muted);
+    border: 1px dashed var(--sky);
+    border-radius: 18px;
+    background: rgba(248, 253, 255, 0.84);
+    color: var(--slate);
     text-align: center;
 }
 
@@ -468,10 +536,10 @@ tbody tr:last-child td {
     min-height: 32px;
     padding: 8px 10px;
     border: 0;
-    border-radius: 6px;
+    border-radius: 10px;
     cursor: pointer;
     font-size: 13px;
-    font-weight: 800;
+    font-weight: 900;
     line-height: 1;
     text-decoration: none;
 }
@@ -484,12 +552,13 @@ tbody tr:last-child td {
 .action-link.cancel {
     background: #fee2e2;
     color: #991b1b;
+    box-shadow: none;
 }
 
 .muted-action {
     color: #98a2b3;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 800;
 }
 
 .edit-container,
@@ -513,7 +582,7 @@ tbody tr:last-child td {
     .topbar {
         align-items: flex-start;
         flex-direction: column;
-        padding: 18px 20px;
+        padding: 16px 20px;
     }
 
     .topbar-actions {
@@ -533,18 +602,31 @@ tbody tr:last-child td {
 @media (max-width: 600px) {
     .login-card {
         padding: 22px;
+        border-radius: 20px;
     }
 
-    .brand h1 {
-        font-size: 24px;
+    .brand {
+        align-items: flex-start;
+    }
+
+    .brand-icon {
+        width: 58px;
+        min-width: 58px;
+        height: 58px;
+    }
+
+    .brand-logo {
+        width: 44px;
+        height: 44px;
+    }
+
+    .wordmark h1,
+    .wordmark-top h1 {
+        font-size: 32px;
     }
 
     .topbar {
-        padding: 16px;
-    }
-
-    .topbar h1 {
-        font-size: 22px;
+        padding: 14px;
     }
 
     .topbar-actions,
@@ -567,6 +649,7 @@ tbody tr:last-child td {
 
     .card {
         padding: 16px;
+        border-radius: 20px;
     }
 
     .form-row {
@@ -593,10 +676,6 @@ tbody tr:last-child td {
 }
 
 @media (max-width: 380px) {
-    .brand {
-        align-items: flex-start;
-    }
-
     .brand-icon {
         width: 50px;
         min-width: 50px;
