@@ -1,6 +1,6 @@
 import sys
 
-path = "/home/remusaxys/sistema_gastos_empresa/sistema_gastos_empresa"
+path = "/home/remusaxys/administracion"
 if path not in sys.path:
     sys.path.insert(0, path)
 
