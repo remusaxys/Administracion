@@ -497,6 +497,64 @@ button[type="submit"] {
     margin-top: 18px;
 }
 
+.usd-card {
+    margin-top: 18px;
+}
+
+.usd-total {
+    min-width: 190px;
+    padding: 14px 16px;
+    border: 1px solid rgba(143, 201, 225, 0.55);
+    border-radius: 18px;
+    background: linear-gradient(135deg, rgba(15, 76, 201, 0.92), rgba(34, 200, 231, 0.9));
+    color: #ffffff;
+    box-shadow: var(--shadow-glow);
+    text-align: right;
+}
+
+.usd-total span {
+    display: block;
+    font-size: 12px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}
+
+.usd-total strong {
+    display: block;
+    margin-top: 6px;
+    font-size: 22px;
+    font-weight: 900;
+}
+
+.rate-grid {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 10px;
+}
+
+.rate-pill {
+    padding: 10px 12px;
+    border: 1px solid rgba(143, 201, 225, 0.45);
+    border-radius: 14px;
+    background: rgba(248, 253, 255, 0.86);
+}
+
+.rate-pill span {
+    display: block;
+    color: #2f6b8b;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 0.12em;
+}
+
+.rate-pill strong {
+    display: block;
+    margin-top: 4px;
+    color: var(--brand-navy);
+    font-size: 15px;
+}
+
 .metric-orbit {
     position: relative;
     z-index: 3;
@@ -955,7 +1013,7 @@ button[type="submit"] {
 
 table {
     width: 100%;
-    min-width: 980px;
+    min-width: 1080px;
     border-collapse: collapse;
 }
 
@@ -1035,6 +1093,10 @@ tbody tr:last-child td {
     color: var(--brand-navy);
     font-weight: 900;
     white-space: nowrap;
+}
+
+.amount-usd {
+    color: #18afc2;
 }
 
 .empty {
@@ -1189,6 +1251,15 @@ tbody tr:last-child td {
 
     .card-header {
         flex-direction: column;
+    }
+
+    .usd-total {
+        width: 100%;
+        text-align: left;
+    }
+
+    .rate-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .chart-box {

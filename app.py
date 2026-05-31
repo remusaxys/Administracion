@@ -45,6 +45,17 @@ CATEGORIAS = [
 
 MONEDAS = ["CLP", "USD", "UYU", "ARS", "BRL", "EUR"]
 
+# Cantidad de cada moneda equivalente a 1 USD.
+# Se puede ajustar en PythonAnywhere con variables como GASTOS_RATE_CLP=950.
+USD_RATES = {
+    "USD": float(os.environ.get("GASTOS_RATE_USD", "1")),
+    "CLP": float(os.environ.get("GASTOS_RATE_CLP", "950")),
+    "UYU": float(os.environ.get("GASTOS_RATE_UYU", "40")),
+    "ARS": float(os.environ.get("GASTOS_RATE_ARS", "1200")),
+    "BRL": float(os.environ.get("GASTOS_RATE_BRL", "5.4")),
+    "EUR": float(os.environ.get("GASTOS_RATE_EUR", "0.92")),
+}
+
 ESTADO_ACTIVO = "Activo"
 ESTADO_ANULADO = "Anulado"
 
@@ -177,6 +188,35 @@ def obtener_resumen_por_responsable():
     return resumen
 
 
+def convertir_a_usd(monto, moneda):
+    tasa = USD_RATES.get(moneda)
+    if not tasa:
+        return 0
+    return round(float(monto) / tasa, 2)
+
+
+def enriquecer_gastos_con_usd(gastos):
+    gastos_enriquecidos = []
+    for gasto in gastos:
+        gasto_dict = dict(gasto)
+        gasto_dict["monto_usd"] = convertir_a_usd(gasto_dict["monto"], gasto_dict["moneda"])
+        gastos_enriquecidos.append(gasto_dict)
+    return gastos_enriquecidos
+
+
+def resumir_usd_por_campo(gastos, campo, valor_vacio=None):
+    resumen = {}
+    for gasto in gastos:
+        clave = gasto.get(campo) or valor_vacio or "Sin dato"
+        resumen[clave] = resumen.get(clave, 0) + gasto["monto_usd"]
+
+    return sorted(
+        [{"label": clave, "total_usd": round(total, 2)} for clave, total in resumen.items()],
+        key=lambda item: item["total_usd"],
+        reverse=True,
+    )
+
+
 def validar_datos_gasto(responsable, fecha, monto, moneda, categoria, descripcion):
     errores = []
 
@@ -270,15 +310,20 @@ def index():
             flash("Gasto cargado correctamente.", "success")
             return redirect(url_for("index"))
 
-    gastos = obtener_gastos(incluir_anulados=True)
-    resumen = obtener_resumen_por_categoria()
-    resumen_responsable = obtener_resumen_por_responsable()
+    gastos = enriquecer_gastos_con_usd(obtener_gastos(incluir_anulados=True))
+    gastos_activos_usd = [gasto for gasto in gastos if gasto["estado"] == ESTADO_ACTIVO]
+    resumen = resumir_usd_por_campo(gastos_activos_usd, "categoria")
+    resumen_responsable = resumir_usd_por_campo(
+        gastos_activos_usd,
+        "responsable",
+        valor_vacio="Sin responsable",
+    )
 
-    labels = [row["categoria"] for row in resumen]
-    values = [round(row["total"], 2) for row in resumen]
+    labels = [row["label"] for row in resumen]
+    values = [round(row["total_usd"], 2) for row in resumen]
 
-    labels_responsable = [row["responsable"] for row in resumen_responsable]
-    values_responsable = [round(row["total"], 2) for row in resumen_responsable]
+    labels_responsable = [row["label"] for row in resumen_responsable]
+    values_responsable = [round(row["total_usd"], 2) for row in resumen_responsable]
 
     total_general = sum(values)
 
@@ -292,6 +337,7 @@ def index():
         labels_responsable=labels_responsable,
         values_responsable=values_responsable,
         total_general=total_general,
+        usd_rates=USD_RATES,
     )
 
 

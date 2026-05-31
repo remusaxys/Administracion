@@ -88,7 +88,7 @@
                     <div>
                         <p class="eyebrow">Metricas activas</p>
                         <h2>Distribucion por categoria</h2>
-                        <p>Total activo registrado: <strong>{{ "%.2f"|format(total_general) }}</strong></p>
+                        <p>Total activo equivalente: <strong>USD {{ "%.2f"|format(total_general) }}</strong></p>
                     </div>
                 </div>
 
@@ -111,12 +111,34 @@
             </div>
         </section>
 
+        <section class="card usd-card">
+            <div class="card-header">
+                <div>
+                    <p class="eyebrow">Vista dolarizada</p>
+                    <h2>Gastos convertidos a USD</h2>
+                    <p>Todos los montos activos se leen con una moneda comun para comparar mejor.</p>
+                </div>
+                <div class="usd-total">
+                    <span>Total activo USD</span>
+                    <strong>USD {{ "%.2f"|format(total_general) }}</strong>
+                </div>
+            </div>
+            <div class="rate-grid">
+                {% for moneda, tasa in usd_rates.items() %}
+                    <div class="rate-pill">
+                        <span>{{ moneda }}</span>
+                        <strong>{{ "%.4g"|format(tasa) }}</strong>
+                    </div>
+                {% endfor %}
+            </div>
+        </section>
+
         <section class="card chart-card">
             <div class="card-header">
                 <div>
                     <p class="eyebrow">Operacion por equipo</p>
                     <h2>Gastos por responsable</h2>
-                    <p>Comparativo total activo registrado por persona</p>
+                    <p>Comparativo total activo convertido a USD por persona</p>
                 </div>
             </div>
 
@@ -151,6 +173,7 @@
                                 <th>Descripcion</th>
                                 <th>Moneda</th>
                                 <th>Monto</th>
+                                <th>USD</th>
                                 <th>Estado</th>
                                 <th>Acciones</th>
                             </tr>
@@ -164,6 +187,7 @@
                                     <td>{{ gasto.descripcion }}</td>
                                     <td>{{ gasto.moneda }}</td>
                                     <td class="amount">{{ "%.2f"|format(gasto.monto) }}</td>
+                                    <td class="amount amount-usd">USD {{ "%.2f"|format(gasto.monto_usd) }}</td>
                                     <td>
                                         {% if gasto.estado == 'Anulado' %}
                                             <span class="status-badge status-anulado">Anulado</span>
@@ -263,7 +287,7 @@
                 data: {
                     labels: labelsResponsable,
                     datasets: [{
-                        label: 'Total gastos activos',
+                        label: 'Total gastos activos USD',
                         data: valuesResponsable,
                         backgroundColor: '#29d3f2',
                         borderColor: '#18afc2',
@@ -295,7 +319,7 @@
                         tooltip: {
                             callbacks: {
                                 label: function(context) {
-                                    return `Total: ${Number(context.raw).toFixed(2)}`;
+                                    return `Total USD: ${Number(context.raw).toFixed(2)}`;
                                 }
                             }
                         }
