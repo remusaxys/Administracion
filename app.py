@@ -30,7 +30,7 @@ app.secret_key = os.environ.get("SECRET_KEY", "cambiar-esta-clave-secreta")
 
 # Usuario inicial del sistema
 USUARIO_ADMIN = os.environ.get("GASTOS_USER", "admin")
-PASSWORD_ADMIN_HASH = generate_password_hash(os.environ.get("GASTOS_PASSWORD", "12345"))
+PASSWORD_ADMIN_HASH = generate_password_hash(os.environ.get("GASTOS_PASSWORD", "ax12345"))
 
 CATEGORIAS = [
     "Transporte",
