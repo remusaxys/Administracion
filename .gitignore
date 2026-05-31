@@ -7,8 +7,11 @@ env/
 .env
 .env.*
 instance/
+.runtime/
+data/
 *.sqlite3
 *.db
+*.db-journal
 *.log
 .DS_Store
 Thumbs.db

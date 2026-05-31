@@ -1,5 +1,6 @@
 import os
 import sqlite3
+import tempfile
 from datetime import datetime
 from functools import wraps
 from io import BytesIO
@@ -12,7 +13,17 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 
 APP_DIR = os.path.dirname(os.path.abspath(__file__))
-DB_PATH = os.path.join(APP_DIR, "gastos.db")
+
+if os.name == "nt":
+    default_db_path = os.path.join(tempfile.gettempdir(), "axystry_gastos.db")
+else:
+    default_db_path = os.path.join(APP_DIR, ".runtime", "gastos.db")
+
+DB_PATH = os.environ.get("GASTOS_DB_PATH", default_db_path)
+
+db_dir = os.path.dirname(DB_PATH)
+if db_dir:
+    os.makedirs(db_dir, exist_ok=True)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "cambiar-esta-clave-secreta")

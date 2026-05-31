@@ -94,6 +94,13 @@
 
                 {% if values %}
                     <div class="chart-box">
+                        <div class="chart-icon-orbit" aria-hidden="true">
+                            {% for categoria in categorias %}
+                                <span class="metric-mini-orb metric-mini-orb-{{ loop.index }}">
+                                    <span class="category-icon category-icon-{{ categoria|lower|replace(' ', '-') }}"></span>
+                                </span>
+                            {% endfor %}
+                        </div>
                         <canvas id="gastosChart"></canvas>
                     </div>
                 {% else %}
@@ -217,6 +224,14 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
+                    layout: {
+                        padding: {
+                            top: 42,
+                            right: 58,
+                            bottom: 8,
+                            left: 58
+                        }
+                    },
                     plugins: {
                         legend: {
                             position: 'bottom',

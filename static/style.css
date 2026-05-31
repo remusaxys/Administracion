@@ -399,6 +399,90 @@ button[type="submit"] {
     height: 330px;
 }
 
+.chart-icon-orbit {
+    position: absolute;
+    left: 50%;
+    top: 49%;
+    z-index: 3;
+    width: 286px;
+    height: 286px;
+    margin-left: -143px;
+    margin-top: -143px;
+    border: 1px solid rgba(143, 201, 225, 0.42);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: miniMetricSpin 28s linear infinite;
+}
+
+.metric-mini-orb {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    width: 28px;
+    height: 28px;
+    margin-left: -14px;
+    margin-top: -14px;
+    place-items: center;
+    border: 1px solid rgba(143, 201, 225, 0.78);
+    border-radius: 999px;
+    background: rgba(248, 253, 255, 0.94);
+    box-shadow: 0 6px 14px rgba(17, 91, 200, 0.10), 0 0 14px rgba(41, 211, 242, 0.16);
+}
+
+.metric-mini-orb .category-icon {
+    width: 15px;
+    height: 15px;
+    transform: scale(0.64);
+    transform-origin: center;
+}
+
+.metric-mini-orb-1 {
+    transform: rotate(0deg) translateX(143px) rotate(0deg);
+}
+
+.metric-mini-orb-2 {
+    transform: rotate(45deg) translateX(143px) rotate(-45deg);
+}
+
+.metric-mini-orb-3 {
+    transform: rotate(90deg) translateX(143px) rotate(-90deg);
+}
+
+.metric-mini-orb-4 {
+    transform: rotate(135deg) translateX(143px) rotate(-135deg);
+}
+
+.metric-mini-orb-5 {
+    transform: rotate(180deg) translateX(143px) rotate(-180deg);
+}
+
+.metric-mini-orb-6 {
+    transform: rotate(225deg) translateX(143px) rotate(-225deg);
+}
+
+.metric-mini-orb-7 {
+    transform: rotate(270deg) translateX(143px) rotate(-270deg);
+}
+
+.metric-mini-orb-8 {
+    transform: rotate(315deg) translateX(143px) rotate(-315deg);
+}
+
+@keyframes miniMetricSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.chart-box-orbit {
+    z-index: 2;
+}
+
 .bar-chart-box {
     height: 320px;
 }
@@ -411,6 +495,453 @@ button[type="submit"] {
 .chart-card,
 .table-card {
     margin-top: 18px;
+}
+
+.metric-orbit {
+    position: relative;
+    z-index: 3;
+    height: 0;
+    pointer-events: none;
+}
+
+.category-orb {
+    position: absolute;
+    display: grid;
+    width: 42px;
+    height: 42px;
+    place-items: center;
+    border: 1px solid rgba(143, 201, 225, 0.72);
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(228, 244, 255, 0.9));
+    box-shadow:
+        0 10px 24px rgba(17, 91, 200, 0.12),
+        0 0 20px rgba(41, 211, 242, 0.18),
+        inset 0 0 0 1px rgba(129, 226, 255, 0.22);
+    animation: iconFloat 5.8s ease-in-out infinite;
+}
+
+.category-orb-1 {
+    left: 4%;
+    top: 18px;
+    animation-delay: 0s;
+}
+
+.category-orb-2 {
+    right: 8%;
+    top: 6px;
+    animation-delay: 0.7s;
+}
+
+.category-orb-3 {
+    left: 12%;
+    top: 116px;
+    animation-delay: 1.4s;
+}
+
+.category-orb-4 {
+    right: 3%;
+    top: 118px;
+    animation-delay: 2.1s;
+}
+
+.category-orb-5 {
+    left: 2%;
+    top: 232px;
+    animation-delay: 2.8s;
+}
+
+.category-orb-6 {
+    right: 14%;
+    top: 236px;
+    animation-delay: 3.5s;
+}
+
+.category-orb-7 {
+    left: 42%;
+    top: -8px;
+    animation-delay: 4.2s;
+}
+
+.category-orb-8 {
+    left: 46%;
+    top: 286px;
+    animation-delay: 4.9s;
+}
+
+.category-icon {
+    position: relative;
+    display: block;
+    width: 23px;
+    height: 23px;
+    color: #0e3a5d;
+}
+
+.category-icon::before,
+.category-icon::after {
+    content: "";
+    position: absolute;
+    box-sizing: border-box;
+}
+
+.category-icon-transporte::before {
+    left: 2px;
+    top: 8px;
+    width: 19px;
+    height: 8px;
+    border: 2px solid currentColor;
+    border-radius: 3px 5px 3px 3px;
+}
+
+.category-icon-transporte::after {
+    left: 5px;
+    top: 15px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: currentColor;
+    box-shadow: 10px 0 0 currentColor;
+}
+
+.category-icon-alimentacion::before {
+    left: 5px;
+    top: 3px;
+    width: 4px;
+    height: 18px;
+    border-left: 2px solid currentColor;
+    border-right: 2px solid currentColor;
+}
+
+.category-icon-alimentacion::after {
+    right: 5px;
+    top: 2px;
+    width: 7px;
+    height: 19px;
+    border-left: 2px solid currentColor;
+    border-radius: 10px 0 0 10px;
+}
+
+.category-icon-software::before {
+    left: 2px;
+    top: 5px;
+    width: 19px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+}
+
+.category-icon-software::after {
+    left: 7px;
+    top: 18px;
+    width: 10px;
+    height: 3px;
+    border-top: 2px solid currentColor;
+}
+
+.category-icon-publicidad::before {
+    left: 3px;
+    top: 7px;
+    width: 14px;
+    height: 10px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+    transform: skewY(-10deg);
+}
+
+.category-icon-publicidad::after {
+    right: 2px;
+    top: 6px;
+    width: 4px;
+    height: 12px;
+    border: 2px solid currentColor;
+    border-left: 0;
+    border-radius: 0 8px 8px 0;
+}
+
+.category-icon-oficina::before {
+    left: 3px;
+    top: 5px;
+    width: 17px;
+    height: 14px;
+    border: 2px solid currentColor;
+    border-radius: 3px;
+}
+
+.category-icon-oficina::after {
+    left: 8px;
+    top: 2px;
+    width: 7px;
+    height: 5px;
+    border: 2px solid currentColor;
+    border-bottom: 0;
+    border-radius: 4px 4px 0 0;
+}
+
+.category-icon-equipos::before {
+    left: 5px;
+    top: 4px;
+    width: 13px;
+    height: 13px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+}
+
+.category-icon-equipos::after {
+    left: 10px;
+    top: 1px;
+    width: 3px;
+    height: 21px;
+    background: currentColor;
+    box-shadow:
+        0 0 0 0 currentColor;
+    transform: rotate(45deg);
+}
+
+.category-icon-servicios::before {
+    left: 4px;
+    top: 5px;
+    width: 15px;
+    height: 15px;
+    border: 2px solid currentColor;
+    border-radius: 50%;
+}
+
+.category-icon-servicios::after {
+    left: 9px;
+    top: 1px;
+    width: 5px;
+    height: 21px;
+    border-top: 3px solid currentColor;
+    border-bottom: 3px solid currentColor;
+}
+
+.category-icon-otros::before {
+    left: 3px;
+    top: 3px;
+    width: 7px;
+    height: 7px;
+    border-radius: 3px;
+    background: currentColor;
+    box-shadow: 11px 0 0 currentColor, 0 11px 0 currentColor, 11px 11px 0 currentColor;
+}
+
+@keyframes iconFloat {
+    0%,
+    100% {
+        transform: translateY(0) scale(1);
+    }
+
+    50% {
+        transform: translateY(-8px) scale(1.04);
+    }
+}
+
+.metric-orbit {
+    position: relative;
+    z-index: 3;
+    width: min(100%, 390px);
+    aspect-ratio: 1;
+    height: auto;
+    margin: 2px auto 18px;
+    pointer-events: none;
+}
+
+.metric-orbit::before {
+    content: "";
+    position: absolute;
+    inset: -8%;
+    border-radius: 50%;
+    background:
+        radial-gradient(circle at 28% 55%, rgba(41, 211, 242, 0.24), transparent 28%),
+        radial-gradient(circle at 78% 36%, rgba(15, 76, 201, 0.14), transparent 30%);
+    filter: blur(2px);
+}
+
+.metric-ring {
+    position: absolute;
+    inset: 13%;
+    border-radius: 50%;
+    border: 1px solid rgba(143, 201, 225, 0.58);
+    box-shadow: 0 0 34px rgba(41, 211, 242, 0.18);
+}
+
+.metric-ring-outer {
+    inset: 7%;
+    border-width: 2px;
+    background: conic-gradient(
+        from 12deg,
+        rgba(41, 211, 242, 0.16),
+        rgba(15, 76, 201, 0.12),
+        rgba(255, 255, 255, 0.5),
+        rgba(41, 211, 242, 0.18)
+    );
+    mask: radial-gradient(circle at center, transparent 58%, #000 59%, #000 100%);
+}
+
+.metric-ring-inner {
+    inset: 23%;
+    background: rgba(255, 255, 255, 0.42);
+}
+
+.metric-ring-label {
+    position: absolute;
+    left: 50%;
+    z-index: 4;
+    color: #2f6b8b;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    white-space: nowrap;
+}
+
+.metric-ring-label-top {
+    top: 21%;
+    transform: translateX(-50%) rotate(-14deg);
+}
+
+.metric-ring-label-bottom {
+    bottom: 22%;
+    transform: translateX(-50%) rotate(42deg);
+}
+
+.metric-orbit-track {
+    position: absolute;
+    inset: 0;
+    z-index: 5;
+    animation: categoryOrbitSpin 34s linear infinite;
+    transform-origin: 50% 50%;
+}
+
+.metric-orbit-track .category-orb {
+    left: 50%;
+    top: 50%;
+    margin-left: -21px;
+    margin-top: -21px;
+}
+
+.metric-orbit-track .category-orb-1 {
+    transform: rotate(0deg) translateX(165px) rotate(0deg);
+}
+
+.metric-orbit-track .category-orb-2 {
+    transform: rotate(45deg) translateX(165px) rotate(-45deg);
+}
+
+.metric-orbit-track .category-orb-3 {
+    transform: rotate(90deg) translateX(165px) rotate(-90deg);
+}
+
+.metric-orbit-track .category-orb-4 {
+    transform: rotate(135deg) translateX(165px) rotate(-135deg);
+}
+
+.metric-orbit-track .category-orb-5 {
+    transform: rotate(180deg) translateX(165px) rotate(-180deg);
+}
+
+.metric-orbit-track .category-orb-6 {
+    transform: rotate(225deg) translateX(165px) rotate(-225deg);
+}
+
+.metric-orbit-track .category-orb-7 {
+    transform: rotate(270deg) translateX(165px) rotate(-270deg);
+}
+
+.metric-orbit-track .category-orb-8 {
+    transform: rotate(315deg) translateX(165px) rotate(-315deg);
+}
+
+.metric-orbit-core {
+    position: absolute;
+    inset: 29%;
+    z-index: 6;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(143, 201, 225, 0.65);
+    border-radius: 50%;
+    background: radial-gradient(circle at 35% 28%, rgba(255, 255, 255, 0.94), rgba(230, 246, 255, 0.72) 62%, rgba(200, 236, 255, 0.5));
+    box-shadow: 0 0 58px rgba(86, 199, 255, 0.36);
+    text-align: center;
+}
+
+.metric-orbit-core img {
+    width: 26px;
+    height: 26px;
+    object-fit: contain;
+}
+
+.metric-orbit-core strong {
+    display: block;
+    margin-top: 5px;
+    color: var(--brand-navy);
+    font-size: 24px;
+    font-weight: 900;
+    line-height: 1;
+}
+
+.metric-orbit-core small {
+    margin-top: 7px;
+    color: #18afc2;
+    font-size: 10px;
+    font-weight: 900;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.metric-orbit-core em {
+    margin-top: 6px;
+    color: #123f63;
+    font-size: 11px;
+    font-style: normal;
+    font-weight: 800;
+}
+
+.metric-orbit-track .category-orb,
+.metric-orbit-track .category-icon {
+    animation: categoryOrbitCounterSpin 34s linear infinite;
+}
+
+.metric-orbit-track .category-orb {
+    animation-name: categoryOrbGlow, categoryOrbitCounterSpin;
+    animation-duration: 3.2s, 34s;
+    animation-timing-function: ease-in-out, linear;
+    animation-iteration-count: infinite, infinite;
+}
+
+.chart-box-orbit {
+    height: 250px;
+}
+
+@keyframes categoryOrbitSpin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes categoryOrbitCounterSpin {
+    from {
+        rotate: 0deg;
+    }
+
+    to {
+        rotate: -360deg;
+    }
+}
+
+@keyframes categoryOrbGlow {
+    0%,
+    100% {
+        filter: brightness(1);
+    }
+
+    50% {
+        filter: brightness(1.12);
+    }
 }
 
 .table-wrap {
